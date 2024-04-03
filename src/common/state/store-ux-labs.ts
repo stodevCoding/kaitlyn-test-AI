@@ -15,6 +15,9 @@ interface UXLabsStore {
   labsAttachScreenCapture: boolean;
   setLabsAttachScreenCapture: (labsAttachScreenCapture: boolean) => void;
 
+  labsBeam: boolean;
+  setLabsBeam: (labsBeam: boolean) => void;
+
   labsCameraDesktop: boolean;
   setLabsCameraDesktop: (labsCameraDesktop: boolean) => void;
 
@@ -32,6 +35,9 @@ export const useUXLabsStore = create<UXLabsStore>()(
 
       labsAttachScreenCapture: false,
       setLabsAttachScreenCapture: (labsAttachScreenCapture: boolean) => set({ labsAttachScreenCapture }),
+
+      labsBeam: true,
+      setLabsBeam: (labsBeam: boolean) => set({ labsBeam }),
 
       labsCameraDesktop: false,
       setLabsCameraDesktop: (labsCameraDesktop: boolean) => set({ labsCameraDesktop }),

@@ -20,21 +20,20 @@ export function PerplexitySourceSetup(props: { sourceId: DModelSourceId }) {
 
   // external state
   const {
-    source, access,
-    sourceSetupValid, updateSetup,
+    source, sourceHasLLMs, access,
+    sourceSetupValid, hasNoBackendCap: needsUserKey, updateSetup,
   } = useSourceSetup(props.sourceId, ModelVendorPerplexity);
 
   // derived state
   const { oaiKey: perplexityKey } = access;
 
   // key validation
-  const needsUserKey = !ModelVendorPerplexity.hasBackendCap?.();
   const shallFetchSucceed = !needsUserKey || (!!perplexityKey && sourceSetupValid);
   const showKeyError = !!perplexityKey && !sourceSetupValid;
 
   // fetch models
   const { isFetching, refetch, isError, error } =
-    useLlmUpdateModels(ModelVendorPerplexity, access, shallFetchSucceed, source);
+    useLlmUpdateModels(ModelVendorPerplexity, access, !sourceHasLLMs && shallFetchSucceed, source);
 
 
   return <>
@@ -53,6 +52,7 @@ export function PerplexitySourceSetup(props: { sourceId: DModelSourceId }) {
     <Typography level='body-sm'>
       The <Link href='https://docs.perplexity.ai/docs/getting-started'>Perplexity API</Link> offers inference
       as a service for a variety of models. See the <Link href='https://www.perplexity.ai/' target='_blank'>Perplexity AI</Link> website for more information.
+      🌐 Online models are quite unique as they can make use of internet data.
     </Typography>
 
     <SetupFormRefetchButton refetch={refetch} disabled={/*!shallFetchSucceed ||*/ isFetching} loading={isFetching} error={isError} />

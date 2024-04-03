@@ -6,6 +6,7 @@ import ScreenshotMonitorIcon from '@mui/icons-material/ScreenshotMonitor';
 import SpeedIcon from '@mui/icons-material/Speed';
 import TitleIcon from '@mui/icons-material/Title';
 
+import { ChatBeamIcon } from '~/common/components/icons/ChatBeamIcon';
 import { FormLabelStart } from '~/common/components/forms/FormLabelStart';
 import { FormSwitchControl } from '~/common/components/forms/FormSwitchControl';
 import { Link } from '~/common/components/Link';
@@ -14,7 +15,7 @@ import { useUXLabsStore } from '~/common/state/store-ux-labs';
 
 
 // uncomment for more settings
-// const DEV_MODE_SETTINGS = false;
+export const DEV_MODE_SETTINGS = false;
 
 
 export function UxLabsSettings() {
@@ -23,6 +24,7 @@ export function UxLabsSettings() {
   const isMobile = useIsMobile();
   const {
     labsAttachScreenCapture, setLabsAttachScreenCapture,
+    labsBeam, setLabsBeam,
     labsCameraDesktop, setLabsCameraDesktop,
     labsChatBarAlt, setLabsChatBarAlt,
     labsHighPerformance, setLabsHighPerformance,
@@ -31,14 +33,19 @@ export function UxLabsSettings() {
   return <>
 
     <FormSwitchControl
+      title={<><ChatBeamIcon color={labsBeam ? 'primary' : undefined} sx={{ mr: 0.25 }} />Chat Beam</>} description={'v1.15 · ' + (labsBeam ? 'Active' : 'Off')}
+      checked={labsBeam} onChange={setLabsBeam}
+    />
+
+    <FormSwitchControl
       title={<><SpeedIcon color={labsHighPerformance ? 'primary' : undefined} sx={{ mr: 0.25 }} />Performance</>} description={'v1.14 · ' + (labsHighPerformance ? 'Unlocked' : 'Default')}
       checked={labsHighPerformance} onChange={setLabsHighPerformance}
     />
 
-    <FormSwitchControl
-      title={<><TitleIcon color={labsChatBarAlt ? 'primary' : undefined} sx={{ mr: 0.25 }} />Chat Title</>} description={'v1.14 · ' + (labsChatBarAlt === 'title' ? 'Show Title' : 'Show Options')}
+    {DEV_MODE_SETTINGS && <FormSwitchControl
+      title={<><TitleIcon color={labsChatBarAlt ? 'primary' : undefined} sx={{ mr: 0.25 }} />Chat Title</>} description={'v1.14 · ' + (labsChatBarAlt === 'title' ? 'Show Title' : 'Show Models')}
       checked={labsChatBarAlt === 'title'} onChange={(on) => setLabsChatBarAlt(on ? 'title' : false)}
-    />
+    />}
 
     {!isMobile && <FormSwitchControl
       title={<><ScreenshotMonitorIcon color={labsAttachScreenCapture ? 'primary' : undefined} sx={{ mr: 0.25 }} /> Screen Capture</>} description={'v1.13 · ' + (labsAttachScreenCapture ? 'Enabled' : 'Disabled')}
